@@ -5,6 +5,16 @@ import json
 import google.generativeai as genai
 import os
 import random
+from dotenv import load_dotenv
+
+load_dotenv()
+
+gemini_api_key = os.getenv('GEMINI_API_KEY')
+
+if gemini_api_key:
+    genai.configure(api_key=gemini_api_key)
+else:
+    st.error("Gemini API Key Not Found")
 
 # App configuration
 st.set_page_config(
@@ -108,14 +118,14 @@ def filter_doctors(specialty, location, preferred_date, preferred_time):
         return pd.DataFrame()
 
 # Add sidebar for API key input (for development)
-with st.sidebar:
-    st.header("Configuration")
-    gemini_api_key = st.text_input("Enter your Gemini API Key", type="password")
-    if gemini_api_key:
-        genai.configure(api_key=gemini_api_key)
-        st.success("API key configured!")
-    else:
-        st.info("Please enter your Gemini API key to use the symptom analysis feature.")
+# with st.sidebar:
+#     st.header("Configuration")
+#     gemini_api_key = st.text_input("Enter your Gemini API Key", type="password")
+#     if gemini_api_key:
+#         genai.configure(api_key=gemini_api_key)
+#         st.success("API key configured!")
+#     else:
+#         st.info("Please enter your Gemini API key to use the symptom analysis feature.")
 
 # Function to analyze symptoms using Gemini
 def analyze_symptoms(user_input):
@@ -233,12 +243,28 @@ with tab4:
             st.write(f"📄 {file.name}")
 
 # Add a button to submit the inputs
+# if st.button("Analyze My Symptoms", type="primary", use_container_width=True):
+#     # Check if any input was provided
+#     if not st.session_state.user_input:
+#         st.error("Please provide at least one form of input about your medical concern.")
+#     elif not gemini_api_key:
+#         st.error("Please enter your Gemini API key in the sidebar to analyze symptoms.")
+#     else:
+#         # Store the input for processing
+#         st.session_state.analysis_started = True
+        
+#         with st.spinner("Analyzing your symptoms to determine the right specialist..."):
+#             # Call the Gemini API to analyze symptoms
+#             specialty = analyze_symptoms(st.session_state.user_input)
+#             st.session_state.specialty = specialty
+#             st.session_state.analysis_complete = True
+            
+#         # Move to the next step
+#         st.rerun()
 if st.button("Analyze My Symptoms", type="primary", use_container_width=True):
     # Check if any input was provided
     if not st.session_state.user_input:
         st.error("Please provide at least one form of input about your medical concern.")
-    elif not gemini_api_key:
-        st.error("Please enter your Gemini API key in the sidebar to analyze symptoms.")
     else:
         # Store the input for processing
         st.session_state.analysis_started = True
