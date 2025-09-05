@@ -117,20 +117,8 @@ def filter_doctors(specialty, location, preferred_date, preferred_time):
     else:
         return pd.DataFrame()
 
-# Add sidebar for API key input (for development)
-# with st.sidebar:
-#     st.header("Configuration")
-#     gemini_api_key = st.text_input("Enter your Gemini API Key", type="password")
-#     if gemini_api_key:
-#         genai.configure(api_key=gemini_api_key)
-#         st.success("API key configured!")
-#     else:
-#         st.info("Please enter your Gemini API key to use the symptom analysis feature.")
 
-# Function to analyze symptoms using Gemini
 def analyze_symptoms(user_input):
-    # try:
-        # Create the model
     generation_config = {
         "temperature": 0.7,
         "top_p": 0.95,
@@ -171,9 +159,6 @@ def analyze_symptoms(user_input):
     # Generate content
     response = model.generate_content(prompt)
     return response.text.strip()
-    # except Exception as e:
-    #     st.error(f"Error analyzing symptoms: {str(e)}")
-    #     return "General Practice"  # Fallback specialty
 
 # App header
 st.title("🏥 MedConnect")
